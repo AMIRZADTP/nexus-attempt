@@ -12,9 +12,9 @@ This project follows a clean, modular architecture that separates the web interf
     -   `data.json`: The input data file containing the book list.
     -   `requirements.txt`: A list of all Python dependencies for the project.
     -   `/nexus_attempt/`: The main Python package containing the application's source code.
-        -   `main.py`: The FastAPI web server.
-        -   `core.py`: The core logic and data models.
-        -   `/templates/`: Jinja2 HTML templates for the UI.
+        -   `main.py`: The FastAPI web server, responsible for handling HTTP requests and rendering HTML pages.
+        -   `core.py`: The core logic module, which includes the Pydantic data model (`Book`) and data processing functions.
+        -   `/templates/`: Contains the Jinja2 HTML templates for the user interface.
 
 ## Getting Started
 
@@ -37,11 +37,11 @@ Follow these steps to set up and run the project locally.
 
     This project requires a virtual environment to manage its dependencies in isolation.
 
-    * First, create the environment:
+    * Create the environment:
         ```bash
         python -m venv venv
         ```
-    * Next, **activate** the environment. This is a crucial step.
+    * Activate the environment:
         * On Windows (PowerShell):
             ```bash
             .\venv\Scripts\Activate.ps1
@@ -59,9 +59,23 @@ Follow these steps to set up and run the project locally.
     pip install -r requirements.txt
     ```
 
-### Usage
+## Usage
 
-To run the development web server, ensure your virtual environment is active and then execute the following command from the project's root directory:
+There are two ways to run the application: for local development and for production. Ensure your virtual environment is active for both.
+
+### For Development
+
+This method uses Uvicorn's built-in reloader, which automatically restarts the server when you change your code. This is ideal for development.
 
 ```bash
 uvicorn nexus_attempt.main:app --reload
+```
+The server will be running on http://127.0.0.1:8000.
+
+### For Production
+
+This method uses Gunicorn to manage Uvicorn workers, providing a stable and performant server suitable for a live environment. This is the command used by platforms like Render.
+```bash
+gunicorn -w 4 -k uvicorn.workers.UvicornWorker nexus_attempt.main:app
+```
+The application will be served on a port managed by Gunicorn, typically 8000.
