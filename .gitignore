@@ -7,8 +7,12 @@ __pycache__/
 # Virtual Environment
 venv/
 
+# Github specific files
+.github
+
 # IDE and editor specific files
 .vscode/
+
 # Configuration files with secrets
 config.ini
 .env
