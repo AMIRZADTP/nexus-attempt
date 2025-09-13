@@ -16,6 +16,8 @@ Nexus Attempt is a personal knowledge management system designed to organize and
 
 **Core Philosophy**: Your data belongs to you and should reside on your machine, accessible through a fast and powerful interface.
 
+See [CHANGELOG.md](CHANGELOG.md) for project evolution, versioning, and history.
+
 ### Built With
 
 - [FastAPI](https://fastapi.tiangolo.com/): High-performance async web server
@@ -96,10 +98,11 @@ nexus-attempt/
 
 #### Configuration Files
 
-**`data.json`** - Initial Dataset
-- Contains 449 book records for development
-- Includes titles, filenames, and metadata
-- Used by migration script to seed database
+**`data.json.example`** - Initial Dataset Template
+- Contains 10 sample book records for development and demonstration
+- Includes placeholder titles and filenames (anonymized for privacy)
+- Copy to `data.json` and customize with your personal ebook data for local use
+- Full personal `data.json` should be gitignored for privacy; migration script uses `data.json`
 
 **`docker-compose.yml`** - Container Configuration
 - Defines PostgreSQL service configuration
@@ -232,6 +235,25 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for:
 - [ ] Full-text search implementation
 - [ ] Multi-type content support (bookmarks, notes)
 - [ ] Export/import functionality
+
+### Version Management and Deployment
+Nexus Attempt uses semantic versioning to track evolution while preserving the prototype.
+
+- **v0.1.0 (Prototype)**: Basic version on `master` branch, deployed on existing Railway app (https://your-prototype-url.railway.app). Use full data.json for personal data.
+- **v1.0.0 (Evolution)**: Enhanced version on `v1.0.0-evolution` branch, with privacy features (data.json.example). Deploy on new Railway app for separate instance.
+
+#### Deployment Instructions
+1. **Prototype (v0.1.0)**:
+   - Railway linked to `master` branch.
+   - Use existing setup; ensure data.json is uploaded securely (not in repo).
+
+2. **Evolution (v1.0.0)**:
+   - Create new Railway project from GitHub repo, select `v1.0.0-evolution` branch.
+   - Configure environment vars (POSTGRES_USER, etc.) and upload data.json.example or personal data.json.
+   - Build and deploy; access at new URL (e.g., https://nexus-evolution.railway.app).
+   - For local testing: Use data.json.example in migrate_to_db.
+
+See CHANGELOG.md for detailed changes.
 
 ---
 
