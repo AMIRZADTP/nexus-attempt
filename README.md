@@ -47,7 +47,7 @@ nexus-attempt/
 ├── scripts/                # Database utilities and migration tools
 │   ├── create_tables.py    # Creates database schema from models
 │   └── migrate_to_db.py    # Populates database with initial dataset
-├── data.json               # Initial dataset (449 books for development)
+├── data_example.json       # Sample dataset template (10 books for development and testing)
 ├── docker-compose.yml      # PostgreSQL container orchestration
 ├── requirements.txt        # Python dependencies
 ├── .env.example            # Environment variables template
@@ -92,17 +92,18 @@ nexus-attempt/
 - Handles enum type creation in PostgreSQL
 
 **`scripts/migrate_to_db.py`** - Data Migration
-- Reads initial data from data.json
+- Reads initial data from data.json (copy and customize from data_example.json)
 - Populates database with book records
 - Handles data transformation and validation
 
 #### Configuration Files
 
-**`data.json.example`** - Initial Dataset Template
+**`data_example.json`** - Initial Dataset Template
 - Contains 10 sample book records for development and demonstration
 - Includes placeholder titles and filenames (anonymized for privacy)
 - Copy to `data.json` and customize with your personal ebook data for local use
 - Full personal `data.json` should be gitignored for privacy; migration script uses `data.json`
+- The application configuration expects `data.json` in the project root for processing
 
 **`docker-compose.yml`** - Container Configuration
 - Defines PostgreSQL service configuration
@@ -143,6 +144,18 @@ nexus-attempt/
    cp .env.example .env
    # Edit .env with your desired PostgreSQL password
    ```
+
+4. **Configure data file**:
+   The application requires a `data.json` file for initial data loading. Use the provided sample:
+   1. Copy `data_example.json` to a new file named `data.json`:
+      ```bash
+      cp data_example.json data.json
+      ```
+   2. Edit `data.json` with your specific configuration values (e.g., book titles, file paths).
+   3. Ensure `data.json` is placed in the project root directory for the application to locate it.
+   Note: Add `data.json` to `.gitignore` if it contains personal data to maintain privacy.
+
+5. **Start database**:
 
 4. **Start database**:
    ```bash
@@ -249,9 +262,9 @@ Nexus Attempt uses semantic versioning to track evolution while preserving the p
 
 2. **Evolution (v1.0.0)**:
    - Create new Railway project from GitHub repo, select `v1.0.0-evolution` branch.
-   - Configure environment vars (POSTGRES_USER, etc.) and upload data.json.example or personal data.json.
+   - Configure environment vars (POSTGRES_USER, etc.) and upload data_example.json or personal data.json.
    - Build and deploy; access at new URL (e.g., https://nexus-evolution.railway.app).
-   - For local testing: Use data.json.example in migrate_to_db.
+   - For local testing: Copy data_example.json to data.json and use in migrate_to_db.
 
 See CHANGELOG.md for detailed changes.
 

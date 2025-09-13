@@ -16,7 +16,7 @@ nexus-attempt/
 │   └── templates/          # Jinja2 templates for web interface
 ├── scripts/                # Database utilities and migration scripts
 ├── frontend/               # Reserved for future Svelte implementation
-├── data.json               # Initial dataset for development
+├── data_example.json       # Sample dataset template for development
 └── docker-compose.yml      # PostgreSQL container orchestration
 ```
 
@@ -49,6 +49,19 @@ nexus-attempt/
    cp .env.example .env
    # Edit .env with appropriate database credentials
    ```
+
+4. **Configure data file**:
+   The application requires a `data.json` file for initial data loading. Use the provided sample:
+   1. Copy `data_example.json` to a new file named `data.json`:
+      ```bash
+      copy data_example.json data.json  # Windows
+      # cp data_example.json data.json  # Unix-like
+      ```
+   2. Edit `data.json` with your specific configuration values (e.g., book titles, file paths).
+   3. Ensure `data.json` is placed in the project root directory for the application to locate it.
+   Note: Add `data.json` to `.gitignore` if it contains personal data to maintain privacy.
+
+5. **Initialize services**:
 
 4. **Initialize services**:
    ```bash
@@ -106,7 +119,7 @@ nexus-attempt/
    ```bash
    # Test database operations
    python -m scripts.create_tables
-   python -m scripts.migrate_to_db
+   python -m scripts.migrate_to_db  # Uses data.json (copied from data_example.json)
    
    # Test web application
    uvicorn backend.server:app --reload
