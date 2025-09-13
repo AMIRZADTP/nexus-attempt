@@ -1,0 +1,30 @@
+# Warp indexing ignore - exclude these from code context
+
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Logs and outputs
+*.log
+outputs/
+
+# Database files
+*.db
+*.sqlite
+
+# IDE files
+.vscode/
+.idea/
+
+# Personal notes and development files
+WARP.md
+notes.md
+todo.txt
+
+# Large data files
+data.json

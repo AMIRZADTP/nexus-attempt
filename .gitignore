@@ -1,1 +1,22 @@
-/venv
+# Python bytecode and cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+
+# IDE and editor specific files
+.vscode/
+
+# Configuration files with secrets
+config.ini
+.env
+
+# Logs and generated output files
+outputs/
+app.log
+
+# Personal development files
+WARP.md

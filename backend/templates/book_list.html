@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Nexus Attempt - Library</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2em;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+        }
+
+        a {
+            color: #569cd6;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Nexus Attempt Library</h1>
+    <ul>
+        {% for item in books %}
+        <li>
+            <a href="/books/{{ item.uuid }}">
+                {{ item.display_index }}. {{ item.title }}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>

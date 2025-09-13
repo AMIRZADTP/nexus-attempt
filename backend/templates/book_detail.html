@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ book.title }}</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 2em;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+        }
+
+        a {
+            color: #569cd6;
+        }
+
+        strong {
+            color: #9cdcfe;
+        }
+
+        hr {
+            border-color: #444;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>{{ book.title }}</h1>
+    <hr>
+    <p><strong>Database ID:</strong> {{ book.id }}</p>
+    <p><strong>UUID:</strong> {{ book.uuid }}</p>
+    <p><strong>Source:</strong> {{ book.source }}</p>
+    <p><strong>Type:</strong> {{ book.item_type }}</p>
+    <p><strong>Date Added:</strong> {{ book.created_at }}</p>
+    <hr>
+    <a href="/">Back to List</a>
+</body>
+
+</html>
