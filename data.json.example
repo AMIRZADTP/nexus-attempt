@@ -1,0 +1,42 @@
+[
+  {
+    "title": "Sample Programming Book",
+    "file_name": "sample-programming.pdf"
+  },
+  {
+    "title": "Sample Data Science Guide",
+    "file_name": "sample-data-science.pdf"
+  },
+  {
+    "title": "Sample AI Introduction",
+    "file_name": "sample-ai-intro.pdf"
+  },
+  {
+    "title": "Sample Cybersecurity Basics",
+    "file_name": "sample-cyber.pdf"
+  },
+  {
+    "title": "Sample Machine Learning Notes",
+    "file_name": "sample-ml-notes.pdf"
+  },
+  {
+    "title": "Sample Database Design",
+    "file_name": "sample-db.pdf"
+  },
+  {
+    "title": "Sample Web Development",
+    "file_name": "sample-web.pdf"
+  },
+  {
+    "title": "Sample Python Tutorial",
+    "file_name": "sample-python.pdf"
+  },
+  {
+    "title": "Sample Mathematics for CS",
+    "file_name": "sample-math.pdf"
+  },
+  {
+    "title": "Sample Project Management",
+    "file_name": "sample-pm.pdf"
+  }
+]
