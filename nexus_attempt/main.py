@@ -36,6 +36,11 @@ except Exception:
 # --- Endpoints ---
 
 
+@app.get("/health")
+async def health():
+    """Health check endpoint for deployment verification."""
+    return {"status": "ok", "books_count": len(BOOKS_IN_MEMORY)}
+
 @app.get("/", response_class=HTMLResponse)
 async def show_books_list(request: Request):
     """Displays the list of all books directly from memory."""
