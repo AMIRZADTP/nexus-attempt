@@ -1,11 +1,3 @@
 __pycache__/
-.github/
-.vscode/
-.backend/
-.frontend/
-outputs/
-scripts/
-.venv/
-.env
+venv/
 app.log
-warp.md
