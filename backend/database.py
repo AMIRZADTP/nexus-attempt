@@ -1,9 +1,6 @@
 import os
 from dotenv import load_dotenv
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
-
-# Explicitly load .env file from project root and check for required variables
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from pathlib import Path
 
 env_path = Path(__file__).parent.parent / '.env'
@@ -15,17 +12,13 @@ DB_HOST = os.getenv("DB_HOST")
 DB_PORT = os.getenv("DB_PORT")
 DB_NAME = os.getenv("DB_NAME")
 
-required_vars = [DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME]
-if not all(required_vars):
-    raise EnvironmentError("One or more required environment variables are missing. Check your .env file.")
-
 DATABASE_URL = (
     f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 )
 
-engine = create_async_engine(DATABASE_URL, echo=True)
+engine = create_async_engine(DATABASE_URL)
 
-AsyncSessionFactory = sessionmaker(
+SessionLocal = async_sessionmaker(
     autocommit=False,
     autoflush=False,
     bind=engine,
