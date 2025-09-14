@@ -1,1 +1,10 @@
-/venv
+.github/
+.vscode/
+.backend/
+.frontend/
+outputs/
+scripts/
+.venv/
+.env
+app.log
+warp.md
