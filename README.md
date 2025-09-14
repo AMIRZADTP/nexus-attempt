@@ -72,10 +72,13 @@ uvicorn nexus_attempt.main:app --reload
 ```
 The server will be running on http://127.0.0.1:8000.
 
-### For Production
 
-This method uses Gunicorn to manage Uvicorn workers, providing a stable and performant server suitable for a live environment. This is the command used by platforms like Render.
+### For Deployment on Platforms like Railway
+
+For deploying on platforms like Railway or for local testing with external access, use the following Uvicorn command. Ensure your virtual environment is active.
+
 ```bash
-gunicorn -w 4 -k uvicorn.workers.UvicornWorker nexus_attempt.main:app
+uvicorn nexus_attempt.main:app --host 0.0.0.0 --port 8080
 ```
-The application will be served on a port managed by Gunicorn, typically 8000.
+
+This command binds the server to all network interfaces (0.0.0.0) on port 8080, making it accessible from localhost and external hosts. It works for both local development with broader access and production deployment on services like Railway.
