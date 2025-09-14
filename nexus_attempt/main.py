@@ -18,13 +18,12 @@ log_path = config['Paths']['log_file']
 json_path = Path(config['Paths']['json_input'])
 
 logger.add(log_path, rotation="10 MB", level="INFO", encoding="utf-8")
-logger.add(lambda msg: print(msg, end=""), level="INFO", colorize=True)
+logger.add(lambda msg: print(msg, end=""), level="INFO", colorize=False)
 
 # --- FastAPI App Initialization ---
 
 app = FastAPI(default_response_class=ORJSONResponse)
-from pathlib import Path
-templates = Jinja2Templates(directory=str(Path(__file__).parent / "templates"))
+templates = Jinja2Templates(directory="nexus_attempt/templates")
 
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
