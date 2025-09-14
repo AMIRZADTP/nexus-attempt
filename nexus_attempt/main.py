@@ -23,7 +23,15 @@ logger.add(lambda msg: print(msg, end=""), level="INFO", colorize=True)
 # --- FastAPI App Initialization ---
 
 app = FastAPI(default_response_class=ORJSONResponse)
-templates = Jinja2Templates(directory="nexus_attempt/templates")
+from pathlib import Path
+templates = Jinja2Templates(directory=str(Path(__file__).parent / "templates"))
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    logger.info(f"Request: {request.method} {request.url.path}")
+    response = await call_next(request)
+    logger.info(f"Response: {response.status_code} for {request.method} {request.url.path}")
+    return response
 
 # --- In-Memory Data Loading ---
 
@@ -39,7 +47,7 @@ except Exception:
 @app.get("/health")
 async def health():
     """Health check endpoint for deployment verification."""
-    return {"status": "ok", "books_count": len(BOOKS_IN_MEMORY)}
+    return ORJSONResponse({"status": "ok", "books_count": len(BOOKS_IN_MEMORY)})
 
 @app.get("/", response_class=HTMLResponse)
 async def show_books_list(request: Request):
