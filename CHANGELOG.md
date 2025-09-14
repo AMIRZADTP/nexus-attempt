@@ -1,25 +1,38 @@
 # Changelog
 
-## Project Evolution Story
-Nexus Attempt started as a personal journey to regain control over my data after losing it in previous setups. I began with a Python script called BookUtil to organize my ebooks: renaming files based on chosen titles, filtering them, and generating a JSON file (`data.json`) from a template (`data_example.json`) with title and file_name for each book. This JSON became the primary data source for the database and web app.
+All notable changes to this project will be documented in this file.
 
-Development involved AI tools: A full session with Gemini Pro 2.5 until it crashed and started hallucinating, then fixed using Warp.dev AI IDE until hitting request limits. The goal was a local-first knowledge graph starting with book catalog, emphasizing privacy and offline access.
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-Semantic versioning:
-- v0.1.0: Initial prototype deployed on Railway (main branch).
-- v1.0.0: Current version with codebase review improvements, privacy enhancements (data.json.example), and evolution branch.
+## [Unreleased]
 
-## v1.0.0 (2025-09-13)
-- Added comprehensive codebase review in review.md.
-- Privacy enhancement: Created data_example.json with sample entries; full data.json gitignored.
-- Updated .gitignore to exclude sensitive data.json.
-- Git branching: New v1.0.0-evolution branch for ongoing development, keeping v0.1.0 prototype intact.
-- Documentation: This CHANGELOG.md and README.md updates for dual-version deployment.
-- Roadmap integration: Prepared for frontend, search, multi-type support.
+### Added
+- Docker support for containerized deployment.
 
-## v0.1.0 (Initial Prototype)
-- Basic FastAPI backend with async PostgreSQL via SQLAlchemy.
-- Book catalog from data.json (copied from data_example.json template, 449 items), migration script.
-- Docker-compose for DB, Jinja2 templates for web UI.
-- Deployed on Railway linked to main/master branch.
-- Core CRUD (read) for items, API docs at /docs.
+### Changed
+- Revised README.md for clarity, platform-agnostic instructions, and Liara-specific guidance.
+
+### Fixed
+- Documentation structure and references.
+
+## [0.1.0] - 2025-09-14
+
+### Added
+- Initial FastAPI application with book catalog functionality.
+- Jinja2 templates for web interface.
+- Data loading from JSON file.
+- Basic project structure and configuration.
+
+### Changed
+- Updated project philosophy and architecture description.
+
+### Deprecated
+- None
+
+## [0.0.1] - 2025-09-01 (Initial Prototype)
+
+### Added
+- Core book listing and detail views.
+- Pydantic models for data validation.
+
+For older versions, refer to Git history.

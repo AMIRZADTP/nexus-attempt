@@ -12,19 +12,20 @@ _A local-first, high-performance personal knowledge graph, built with a modern, 
 
 ## About
 
-Nexus Attempt is a personal knowledge management system designed to organize and connect digital information. Currently functioning as a book catalog with 449 indexed items, the architecture is built to evolve into a comprehensive knowledge graph for managing bookmarks, notes, articles, and more.
+Nexus Attempt is a personal knowledge management system designed to organize and connect digital information. It starts as a book catalog with 449 indexed items and is built to evolve into a comprehensive knowledge graph supporting bookmarks, notes, articles, and more.
 
-**Core Philosophy**: Your data belongs to you and should reside on your machine, accessible through a fast and powerful interface.
+**Core Philosophy**: Your data belongs to you, stored locally and accessible via a fast, intuitive interface.
 
-See [CHANGELOG.md](CHANGELOG.md) for project evolution, versioning, and history.
+See [CHANGELOG.md](CHANGELOG.md) for updates, versioning, and history.
 
 ### Built With
 
-- [FastAPI](https://fastapi.tiangolo.com/): High-performance async web server
+- [FastAPI](https://fastapi.tiangolo.com/): High-performance async web framework
 - [SQLAlchemy 2.0](https://www.sqlalchemy.org/): Modern async ORM
 - [PostgreSQL](https://www.postgresql.org/): Reliable relational database
-- [Docker](https://www.docker.com/): Containerized database environment
-- [Pydantic](https://docs.pydantic.dev/): Data validation and API modeling
+- [Docker](https://www.docker.com/): Containerized environments
+- [Pydantic](https://docs.pydantic.dev/): Data validation and modeling
+- [Jinja2](https://jinja.palletsprojects.com/): Server-side templating
 
 ---
 
@@ -32,87 +33,30 @@ See [CHANGELOG.md](CHANGELOG.md) for project evolution, versioning, and history.
 
 ```
 nexus-attempt/
-├── backend/                # Core application package
-│   ├── __init__.py         # Package marker
-│   ├── server.py           # FastAPI web server and API endpoints
-│   ├── domain.py           # Business logic and data access functions
-│   ├── database.py         # Database connection and session management
-│   ├── models.py           # SQLAlchemy ORM data models and schema
-│   └── templates/          # Jinja2 HTML templates for web interface
-├── frontend/               # Reserved for future Svelte frontend
-│   ├── README.md           # Frontend development notes
-│   ├── package.json        # Node.js dependencies (placeholder)
-│   ├── jsconfig.json       # JavaScript configuration
-│   └── tsconfig.json       # TypeScript configuration
-├── scripts/                # Database utilities and migration tools
-│   ├── create_tables.py    # Creates database schema from models
-│   └── migrate_to_db.py    # Populates database with initial dataset
-├── data_example.json       # Sample dataset template (10 books for development and testing)
-├── docker-compose.yml      # PostgreSQL container orchestration
-├── requirements.txt        # Python dependencies
-├── .env.example            # Environment variables template
-├── .gitignore              # Git exclusion rules
-├── LICENSE                 # MIT license
-├── CONTRIBUTING.md         # Development guidelines
-└── venv/                   # Python virtual environment
+├── nexus_attempt/            # Core application package
+│   ├── __init__.py           # Package initializer
+│   ├── main.py               # FastAPI app and routes
+│   ├── core.py               # Business logic and data models
+│   └── templates/            # HTML templates (Jinja2)
+│       ├── book_list.html
+│       └── book_detail.html
+├── config.ini                # Configuration file
+├── data.json                 # Initial data source
+├── requirements.txt          # Python dependencies
+├── Dockerfile                # Docker image definition
+├── .dockerignore             # Docker build exclusions
+├── .gitignore                # Git exclusions
+├── README.md                 # Project documentation
+└── LICENSE                   # MIT license
 ```
 
-### File Descriptions
+### Key Files
 
-#### Backend Components
-
-**`backend/server.py`** - FastAPI Application
-- Defines web routes and API endpoints
-- Handles HTTP requests for book listing and details
-- Implements dependency injection for database sessions
-- Serves Jinja2 templates for web interface
-
-**`backend/models.py`** - Database Schema
-- Defines SQLAlchemy ORM models (Item, Topic, associations)
-- Implements ItemTypeEnum for type safety
-- Establishes relationships between items and topics
-- Configures UUID-based primary keys and timestamps
-
-**`backend/database.py`** - Database Management
-- Configures async PostgreSQL connection
-- Creates SQLAlchemy engine and session factory
-- Manages connection pooling and lifecycle
-
-**`backend/domain.py`** - Business Logic
-- Contains data access layer functions
-- Implements item fetching and querying logic
-- Defines Pydantic models for API responses
-- Handles data transformation between database and API
-
-#### Database Scripts
-
-**`scripts/create_tables.py`** - Schema Creation
-- Drops and recreates database schema
-- Creates all tables defined in models.py
-- Handles enum type creation in PostgreSQL
-
-**`scripts/migrate_to_db.py`** - Data Migration
-- Reads initial data from data.json (copy and customize from data_example.json)
-- Populates database with book records
-- Handles data transformation and validation
-
-#### Configuration Files
-
-**`data_example.json`** - Initial Dataset Template
-- Contains 10 sample book records for development and demonstration
-- Includes placeholder titles and filenames (anonymized for privacy)
-- Copy to `data.json` and customize with your personal ebook data for local use
-- Full personal `data.json` should be gitignored for privacy; migration script uses `data.json`
-- The application configuration expects `data.json` in the project root for processing
-
-**`docker-compose.yml`** - Container Configuration
-- Defines PostgreSQL service configuration
-- Sets up persistent data volumes
-- Configures environment variable injection
-
-**`requirements.txt`** - Python Dependencies
-- Lists all required Python packages
-- Includes web framework, database, and utility libraries
+- **`nexus_attempt/main.py`**: Defines the FastAPI app, routes, and template rendering.
+- **`nexus_attempt/core.py`**: Handles data processing, Pydantic models (e.g., Book), and logic.
+- **`config.ini`**: Stores paths and settings (e.g., data file location).
+- **`data.json`**: JSON file with book data; customize for your collection.
+- **`Dockerfile`**: Builds a containerized version for easy deployment.
 
 ---
 
@@ -120,169 +64,192 @@ nexus-attempt/
 
 ### Prerequisites
 
-- Python 3.10 or newer
-- Docker Desktop (must be running)
+- Python 3.10+
+- Docker (for database/containerized runs)
 - Git
 
-### Installation
+### Local Installation and Run
 
-1. **Clone and setup**:
-   ```bash
-   git clone <repository-url>
+1. **Clone the Repository**:
+   ```
+   git clone https://github.com/AMIRZADTP/nexus-attempt.git
    cd nexus-attempt
-   python -m venv venv
-   .\venv\Scripts\Activate.ps1  # Windows PowerShell
    ```
 
-2. **Install dependencies**:
-   ```bash
+2. **Set Up Virtual Environment**:
+   ```
+   python -m venv venv
+   # Activate:
+   # Windows: venv\Scripts\activate
+   # macOS/Linux: source venv/bin/activate
+   ```
+
+3. **Install Dependencies**:
+   ```
    pip install -r requirements.txt
    ```
 
-3. **Configure environment**:
-   ```bash
-   cp .env.example .env
-   # Edit .env with your desired PostgreSQL password
+4. **Configure Data**:
+   - Edit `config.ini` for data paths if needed.
+   - Ensure `data.json` contains your book data (format: array of objects with title, author, etc.).
+   - Add `data.json` to `.gitignore` for privacy.
+
+5. **Run the Application**:
+   - For development (with auto-reload):
+     ```
+     uvicorn nexus_attempt.main:app --reload --host 127.0.0.1 --port 8000
+     ```
+   - For production-like (bind to all interfaces):
+     ```
+     uvicorn nexus_attempt.main:app --host 0.0.0.0 --port 8000
+     ```
+   - Access: http://localhost:8000 (web UI), http://localhost:8000/docs (API docs).
+
+### Docker Run (Local)
+
+1. **Build the Image**:
+   ```
+   docker build -t nexus-attempt .
    ```
 
-4. **Configure data file**:
-   The application requires a `data.json` file for initial data loading. Use the provided sample:
-   1. Copy `data_example.json` to a new file named `data.json`:
-      ```bash
-      cp data_example.json data.json
-      ```
-   2. Edit `data.json` with your specific configuration values (e.g., book titles, file paths).
-   3. Ensure `data.json` is placed in the project root directory for the application to locate it.
-   Note: Add `data.json` to `.gitignore` if it contains personal data to maintain privacy.
-
-5. **Start database**:
-
-4. **Start database**:
-   ```bash
-   docker-compose up -d
+2. **Run the Container**:
    ```
-
-5. **Initialize database**:
-   ```bash
-   python -m scripts.create_tables
-   python -m scripts.migrate_to_db
+   docker run -p 8000:8080 nexus-attempt
    ```
+   - Maps host port 8000 to container port 8080.
+   - Access: http://localhost:8000
 
-6. **Start development server**:
-   ```bash
-   uvicorn backend.server:app --reload
-   ```
-
-7. **Access application**:
-   - Web interface: http://127.0.0.1:8000
-   - API documentation: http://127.0.0.1:8000/docs
+Troubleshooting Local Runs:
+- Ensure `data.json` is valid JSON.
+- Check console for import errors (e.g., missing dependencies).
+- If port 8000 is in use, change `--port` flag.
 
 ---
 
-## Development
+## Deployment
 
-### Key Concepts
+For deploying to cloud platforms (e.g., PaaS like Heroku, Render, or container services), use these general instructions. Adapt based on the platform's runtime (Python or Docker).
 
-**Module Execution**: Scripts must be run using `python -m scripts.script_name` to ensure proper import resolution from the project root.
+### Platform-Agnostic Deployment (Non-Docker)
 
-**Async Architecture**: All database operations use async/await patterns for non-blocking I/O performance.
+1. **Prepare Files**:
+   - Ensure `requirements.txt` is up-to-date.
+   - Create a `Procfile` (for Procfile-based platforms):
+     ```
+     web: uvicorn nexus_attempt.main:app --host 0.0.0.0 --port $PORT
+     ```
+     - `$PORT` is set by the platform (e.g., 8000).
+   - For Gunicorn (production scaling):
+     - Add `gunicorn` to `requirements.txt`.
+     - Procfile: `web: gunicorn -w 4 -k uvicorn.workers.UvicornWorker nexus_attempt.main:app`
 
-**Type Safety**: Enum types are strictly enforced (use `ItemTypeEnum.BOOK` not `'book'`).
+2. **Environment Configuration**:
+   - Set vars like `DATA_PATH` in platform dashboard (point to `data.json`).
+   - Upload `data.json` securely (e.g., via platform file storage).
 
-### Development Commands
+3. **Deploy Steps**:
+   - Connect Git repo to platform.
+   - Select Python runtime.
+   - Set build command: `pip install -r requirements.txt`
+   - Set start command: Use Procfile or direct `uvicorn nexus_attempt.main:app --host 0.0.0.0 --port $PORT`
+   - Deploy and monitor logs for errors.
 
-```bash
-# Database management
-docker-compose up -d                 # Start PostgreSQL
-python -m scripts.create_tables      # Reset database schema  
-python -m scripts.migrate_to_db      # Populate with data
+### Docker-Based Deployment
 
-# Server management
-uvicorn backend.server:app --reload  # Development server (hot reload)
-uvicorn backend.server:app           # Production-like server
-```
+1. **Build and Push Image**:
+   - Build: `docker build -t yourusername/nexus-attempt:latest .`
+   - Push to registry (e.g., Docker Hub): `docker push yourusername/nexus-attempt:latest`
 
-### Architecture Notes
+2. **Platform Setup**:
+   - Choose Docker runtime.
+   - Specify image: `yourusername/nexus-attempt:latest`
+   - Set port: 8080 (exposed in Dockerfile).
+   - Configure env vars and volumes for `data.json` if persistent storage needed.
 
-The application follows a three-tier architecture:
-1. **Presentation Layer**: FastAPI routes and Jinja2 templates
-2. **Business Layer**: Domain logic in `domain.py`
-3. **Data Layer**: SQLAlchemy models and database operations
+Troubleshooting Deployment:
+- Logs: Check for missing files (e.g., `data.json` not found) or port binding errors.
+- Dependencies: Ensure all in `requirements.txt`.
+- Data: Use platform storage for `data.json`; avoid committing sensitive data.
+- Scaling: Use Gunicorn for multi-worker support.
+
+---
+
+## Liara-Specific Deployment
+
+Liara is a cloud PaaS supporting Git and Docker deployments. Follow these steps for seamless setup.
+
+### Prerequisites
+
+- Liara account (sign up at liara.ir).
+- Git repo pushed (with Dockerfile if using containers).
+- `data.json` prepared (upload via Liara console if needed).
+
+### Step-by-Step Guide
+
+1. **Create App in Liara Console**:
+   - Log in to Liara dashboard.
+   - Click "New App" > Select "Git" (for source code) or "Docker" (for image).
+   - Connect your GitHub repo (https://github.com/AMIRZADTP/nexus-attempt).
+
+2. **Configure Runtime**:
+   - For Git (Python runtime):
+     - Runtime: "Python".
+     - Build Command: `pip install -r requirements.txt`
+     - Start Command: `uvicorn nexus_attempt.main:app --host 0.0.0.0 --port $PORT`
+     - Or use Procfile (create in root):
+       ```
+       web: uvicorn nexus_attempt.main:app --host 0.0.0.0 --port $PORT
+       ```
+   - For Docker:
+     - Runtime: "Docker".
+     - Liara auto-builds from Dockerfile on Git push.
+     - Port: 8080 (matches EXPOSE in Dockerfile).
+
+3. **Environment Variables and Files**:
+   - In "Config" tab: Add vars (e.g., `DATA_PATH=/app/data.json`).
+   - Upload `data.json`: Use "Files" tab or persistent disk (add to liara.json if needed):
+     ```json
+     {
+       "type": "python:uvicorn",
+       "disk": 512,
+       "cmd": "uvicorn nexus_attempt.main:app --host 0.0.0.0 --port $PORT"
+     }
+     ```
+   - For config.ini: Upload or set via env vars.
+
+4. **Deploy**:
+   - Click "Deploy".
+   - Monitor build/logs in "Logs" tab.
+   - Access via assigned domain (e.g., yourapp.liara.ir).
+
+### Troubleshooting on Liara
+
+- **Build Fails**: Check logs for missing deps; ensure requirements.txt is complete.
+- **Start Command Rejected**: Use Procfile or liara.json instead of direct command.
+- **Data Not Loading**: Verify `data.json` path in config.ini; use absolute paths (/app/data.json).
+- **Port Issues**: Liara uses $PORT; ensure --port $PORT in command.
+- **Persistence**: Enable disk in config for `data.json` storage across deploys.
+- **Logs**: View real-time logs; common errors: Import failures (check Python version), file not found (upload data).
+- **Scaling**: Liara auto-scales; add workers with Gunicorn if traffic high.
+
+Contact Liara support for platform-specific issues.
 
 ---
 
 ## API Endpoints
 
-- `GET /` - List all books with pagination
-- `GET /books/{uuid}` - Get detailed information for a specific book
-- `GET /docs` - Interactive API documentation
+- `GET /` - Book list (paginated)
+- `GET /books/{id}` - Book details
+- `GET /docs` - Interactive API docs (Swagger)
 
 ---
 
 ## Contributing
 
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for:
-- Development setup instructions
-- Coding standards and guidelines
-- Pull request process
-- Architecture considerations
-
----
-
-## Roadmap
-
-### Current Phase
-- ✅ Core CRUD operations for items
-- ✅ Basic web interface
-- ✅ PostgreSQL integration
-- ✅ Docker development environment
-
-### Near Term
-- [ ] Search and filtering capabilities
-- [ ] Enhanced API endpoints
-- [ ] Data validation improvements
-- [ ] Testing framework integration
-
-### Future Vision
-- [ ] Svelte frontend development
-- [ ] Full-text search implementation
-- [ ] Multi-type content support (bookmarks, notes)
-- [ ] Export/import functionality
-
-### Version Management and Deployment
-Nexus Attempt uses semantic versioning to track evolution while preserving the prototype.
-
-- **v0.1.0 (Prototype)**: Basic version on `master` branch, deployed on existing Railway app (https://your-prototype-url.railway.app). Use full data.json for personal data.
-- **v1.0.0 (Evolution)**: Enhanced version on `v1.0.0-evolution` branch, with privacy features (data.json.example). Deploy on new Railway app for separate instance.
-
-#### Deployment Instructions
-1. **Prototype (v0.1.0)**:
-   - Railway linked to `master` branch.
-   - Use existing setup; ensure data.json is uploaded securely (not in repo).
-
-2. **Evolution (v1.0.0)**:
-   - Create new Railway project from GitHub repo, select `v1.0.0-evolution` branch.
-   - Configure environment vars (POSTGRES_USER, etc.) and upload data_example.json or personal data.json.
-   - Build and deploy; access at new URL (e.g., https://nexus-evolution.railway.app).
-   - For local testing: Copy data_example.json to data.json and use in migrate_to_db.
-
-See CHANGELOG.md for detailed changes.
+Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines, setup, and pull request process.
 
 ---
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## Technical Stack
-
-| Component | Technology | Purpose |
-|-----------|------------|---------|
-| Web Framework | FastAPI | Async HTTP server and API |
-| Database | PostgreSQL 17 | Data persistence |
-| ORM | SQLAlchemy 2.0 | Database abstraction |
-| Containerization | Docker | Development environment |
-| Validation | Pydantic | Data modeling and validation |
-| Templates | Jinja2 | Server-side rendering |
+MIT License - see [LICENSE](LICENSE).

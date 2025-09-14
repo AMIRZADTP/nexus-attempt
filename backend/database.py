@@ -1,24 +1,26 @@
-import configparser
+import os
+from dotenv import load_dotenv
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
+
+# Explicitly load .env file from project root and check for required variables
 from pathlib import Path
 
-# --- 1. Define the project root directory dynamically ---
-# Path(__file__) is the path to the current file (database.py)
-# .resolve() makes the path absolute
-# .parent.parent gets the root directory ("nexus-attempt/")
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+env_path = Path(__file__).parent.parent / '.env'
+load_dotenv(dotenv_path=env_path)
 
-# --- 2. Construct the absolute path to the config file ---
-CONFIG_FILE_PATH = PROJECT_ROOT / 'config.ini'
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
+DB_NAME = os.getenv("DB_NAME")
 
-config = configparser.ConfigParser()
-config.read(CONFIG_FILE_PATH)
+required_vars = [DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME]
+if not all(required_vars):
+    raise EnvironmentError("One or more required environment variables are missing. Check your .env file.")
 
-db_config = config['Database']
 DATABASE_URL = (
-    f"postgresql+asyncpg://{db_config['user']}:{db_config['password']}"
-    f"@{db_config['host']}:{db_config['port']}/{db_config['dbname']}"
+    f"postgresql+asyncpg://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 )
 
 engine = create_async_engine(DATABASE_URL, echo=True)

@@ -4,6 +4,10 @@ __pycache__/
 *.pyo
 *.pyd
 
+#unrelated files and directories
+frontend/
+nexus_attempt
+
 # Virtual Environment
 venv/
 
@@ -12,12 +16,6 @@ venv/
 
 # IDE and editor specific files
 .vscode/
-
-# Configuration files with secrets
-config.ini
-.env
-data.json
-
 
 # Logs and generated output files
 outputs/
