@@ -1,10 +1,10 @@
 import uuid
+import enum
 from sqlalchemy import (
     Column, Integer, String, Table, ForeignKey, DateTime, JSON, UUID, Enum
 )
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.sql import func
-import enum
 
 
 class ItemTypeEnum(enum.Enum):
@@ -17,8 +17,7 @@ class ItemTypeEnum(enum.Enum):
 Base = declarative_base()
 
 item_topic_association = Table(
-    'item_topics',
-    Base.metadata,
+    'item_topics', Base.metadata,
     Column('item_id', Integer, ForeignKey('items.id'), primary_key=True),
     Column('topic_id', Integer, ForeignKey('topics.id'), primary_key=True)
 )
@@ -26,19 +25,20 @@ item_topic_association = Table(
 
 class Item(Base):
     __tablename__ = 'items'
-
     id = Column(Integer, primary_key=True)
     uuid = Column(UUID(as_uuid=True), default=uuid.uuid4,
-                  unique=True, nullable=False)
-    title = Column(String, nullable=False)
+                  unique=True, nullable=False, index=True)
+    title = Column(String, nullable=False, index=True)
     source = Column(String)
     item_type = Column(Enum(ItemTypeEnum),
                        default=ItemTypeEnum.UNCATEGORIZED, nullable=False)
     attributes = Column(JSON)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-
     topics = relationship(
         "Topic", secondary=item_topic_association, back_populates="items")
+
+    def __repr__(self):
+        return f"<Item(id={self.id}, title='{self.title[:20]}...')>"
 
 
 class Topic(Base):
@@ -47,3 +47,6 @@ class Topic(Base):
     name = Column(String, unique=True, nullable=False)
     items = relationship(
         "Item", secondary=item_topic_association, back_populates="topics")
+
+    def __repr__(self):
+        return f"<Topic(id={self.id}, name='{self.name}')>"

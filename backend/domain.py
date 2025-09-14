@@ -2,18 +2,20 @@ import uuid
 from typing import List, Optional
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
-from pydantic import BaseModel, field_validator
-
+from pydantic import BaseModel, field_validator, ConfigDict
 from .models import Item as ItemModel
 
 
 class ItemSummary(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     uuid: uuid.UUID
-    display_index: int
     title: str
 
 
 class ItemDetail(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     uuid: uuid.UUID
     title: str
@@ -28,32 +30,13 @@ class ItemDetail(BaseModel):
             return v.strftime('%Y-%m-%d %H:%M')
         return "N/A"
 
-    class Config:
-        from_attributes = True
 
-
-async def fetch_all_items(db_session: AsyncSession) -> List[ItemSummary]:
-    row_number_column = func.row_number().over(
-        order_by=ItemModel.title).label("display_index")
-    query = select(
-        ItemModel.uuid,
-        ItemModel.title,
-        row_number_column
-    ).order_by(ItemModel.title)
-
+async def fetch_all_items(db_session: AsyncSession, skip: int = 0, limit: int = 100) -> List[ItemSummary]:
+    query = select(ItemModel).order_by(
+        ItemModel.title).offset(skip).limit(limit)
     result = await db_session.execute(query)
-
-    items_from_db = result.all()
-
-    items_as_response = [
-        ItemSummary(
-            uuid=item.uuid,
-            display_index=item.display_index,
-            title=item.title
-        )
-        for item in items_from_db
-    ]
-    return items_as_response
+    items_from_db = result.scalars().all()
+    return [ItemSummary.model_validate(item) for item in items_from_db]
 
 
 async def fetch_item_by_uuid(db_session: AsyncSession, item_uuid: uuid.UUID) -> Optional[ItemModel]:
