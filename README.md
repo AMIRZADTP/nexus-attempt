@@ -1,30 +1,30 @@
-Nexus Attempt
+# Nexus
 
-A local-first, containerized personal knowledge base, starting with a simple book catalog.
+A **local-first, containerized personal knowledge base**, designed to organize your digital life.
+Currently features a book catalog with a modern, layered architecture.
 
-Quick Start
+## 🚀 Quick Start
 
-This project is fully containerized using Docker. The only prerequisite is a working installation of Docker and Docker Compose.
+### Prerequisites
+- **Docker** and **Docker Compose** installed & running.
+- **Git** installed.
 
-1. Clone the Repository
+### 1. Clone & Setup
 
-Clone this project to your local machine:
-```Bash
+```bash
 git clone https://github.com/your-username/nexus-attempt.git
 cd nexus-attempt
+
+# Create environment file
+cp .env .env.local  # Or just create .env
 ```
 
-2. Create Environment File
-
-Create a `.env` file in the project's root directory and paste the following content. The default values are configured for the local Docker environment.
-```Code snippet
-
-# PostgreSQL Database Credentials
+**Recommended `.env` content:**
+```ini
 POSTGRES_USER=nexus_user
 POSTGRES_PASSWORD=nassword
 POSTGRES_DB=nexus_db
 
-# Application Database Connection Settings
 DB_USER=nexus_user
 DB_PASSWORD=nassword
 DB_HOST=db
@@ -32,38 +32,66 @@ DB_PORT=5432
 DB_NAME=nexus_db
 ```
 
-3. Build and Run the Application
+### 2. Run with Docker
 
-Run the following command in your terminal. This will build the application image and start all services in the background.
 ```bash
-docker-compose up --build -d
+docker-compose up --build
 ```
-    --build: Builds the application's Docker image from the Dockerfile.
+Access the app at: **http://localhost:8000**
 
-    -d: Runs the containers in detached mode (in the background).
+---
 
+## 🛠️ Development (Local)
 
-The first time you run this, the entrypoint.sh script will automatically wait for the database to be ready, create all necessary tables, and migrate the initial data from data.json.
+This project uses **uv** for blazing fast dependency management.
 
-4. Access the Application
-
-Once the containers are up and running, open your web browser and navigate to:
-
-http://localhost:8000
-
-You should see the list of books from your `data.json` file.
-
-Additional Commands
-
-Checking Logs
-
-To view the live logs of the application:
-```Bash
-docker-compose logs -f app
+### 1. Install `uv`
+```powershell
+# Windows (PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
-Stopping the Application
 
-To stop and remove all containers, networks, and volumes:
-```Bash
-docker-compose down -v
+### 2. Install Dependencies
+```bash
+uv sync --all-extras
 ```
+
+### 3. Run Locally
+You need a running database first (e.g. via Docker):
+```bash
+docker-compose up -d db
+```
+
+Then run the app:
+```bash
+uv run uvicorn nexus.main:app --reload
+```
+
+### 4. Code Quality
+```bash
+# Linting & Formatting
+uv run ruff check src/
+uv run ruff format src/
+
+# Type Checking
+uv run mypy src/
+```
+
+---
+
+## 🏗️ Architecture
+
+Nexus follows a **Domain-Driven Design (DDD)** inspired layered architecture:
+
+| Layer | Path | Purpose |
+|-------|------|---------|
+| **API** | `src/nexus/api` | REST endpoints, templates, dependencies |
+| **Domain** | `src/nexus/domain` | Business logic, Pydantic schemas, models |
+| **Infrastructure** | `src/nexus/infrastructure` | Database, Cache, External services |
+
+key Technologies:
+- **FastAPI**: Modern, fast web framework
+- **SQLAlchemy (Async)**: Database ORM
+- **PostgreSQL**: Robust relational database
+- **Jinja2**: Server-side templating
+- **aiocache**: In-memory caching for performance
