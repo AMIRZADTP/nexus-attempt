@@ -5,10 +5,12 @@ from pathlib import Path
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine
 
-from backend.database import DATABASE_URL
-from backend.models import Base, Item, ItemTypeEnum
+from nexus.infrastructure.database import DATABASE_URL
+from nexus.domain.models import Base, Item, ItemTypeEnum
 
-JSON_INPUT_FILE = Path(__file__).parent.parent / "data.json"
+# data.json is at project root. init_db.py is in src/nexus/infrastructure
+# So parent (infra) -> parent (nexus) -> parent (src) -> parent (root)
+JSON_INPUT_FILE = Path(__file__).resolve().parent.parent.parent.parent / "data.json"
 
 
 async def main():

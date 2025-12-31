@@ -7,7 +7,8 @@ done
 echo "Database is ready!"
 
 echo "Running database initialization..."
-python -m backend.init_db
+echo "Running database initialization..."
+python -m nexus.infrastructure.init_db
 
 echo "Starting Uvicorn server..."
-exec "$@"
+exec uvicorn nexus.main:app --host 0.0.0.0 --port 8000

@@ -2,24 +2,43 @@ FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
+    UV_COMPILE_BYTECODE=1 \
+    UV_LINK_MODE=copy
 
 WORKDIR /app
 
+# Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
-RUN useradd --create-home --shell /bin/bash appuser
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-COPY --chown=appuser:appuser . .
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
+# Copy dependency files
+COPY pyproject.toml uv.lock ./
+
+# Install dependencies
+RUN uv sync --frozen --no-install-project --no-dev
+
+# Copy application code
+COPY . .
+
+# Install the application itself
+RUN uv sync --frozen --no-dev
+
+# Make entrypoint executable
 RUN chmod +x /app/entrypoint.sh
 
+# Create user
+RUN useradd --create-home --shell /bin/bash appuser
 USER appuser
+
 EXPOSE 8000
 ENTRYPOINT ["/app/entrypoint.sh"]
-CMD ["uvicorn", "backend.server:app", "--host", "0.0.0.0", "--port", "8000"]
+# CMD is handled by entrypoint calling exec uvicorn if arguments are passed, 
+# but we hardcoded uvicorn in entrypoint for simplicity or we can keep it flexible.
+# The updated entrypoint.sh executes uvicorn directly.
+# So CMD here is not strictly needed if ENTRYPOINT runs uvicorn, but standard practice:
+CMD []

@@ -1,10 +1,11 @@
 import os
+from dotenv import load_dotenv
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from pathlib import Path
 
-from dotenv import load_dotenv
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-
-env_path = Path(__file__).parent.parent / ".env"
+# .env is at project root. database.py is in src/nexus/infrastructure
+# So parent (infra) -> parent (nexus) -> parent (src) -> parent (root)
+env_path = Path(__file__).resolve().parent.parent.parent.parent / '.env'
 load_dotenv(dotenv_path=env_path)
 
 DB_USER = os.getenv("DB_USER")
@@ -20,5 +21,8 @@ DATABASE_URL = (
 engine = create_async_engine(DATABASE_URL)
 
 SessionLocal = async_sessionmaker(
-    autocommit=False, autoflush=False, bind=engine, class_=AsyncSession
+    autocommit=False,
+    autoflush=False,
+    bind=engine,
+    class_=AsyncSession
 )
