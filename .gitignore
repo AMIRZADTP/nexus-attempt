@@ -13,7 +13,15 @@ venv/
 .venv/
 
 # uv (package manager)
-uv.lock
+# uv.lock should be committed for applications to ensure reproducible builds
+# uv.lock
+
+# Cache directories
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
 
 # Github specific files
 .github
