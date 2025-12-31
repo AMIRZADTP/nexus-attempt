@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from backend.database import DATABASE_URL
 from backend.models import Base, Item, ItemTypeEnum
 
-JSON_INPUT_FILE = Path(__file__).parent.parent / 'data.json'
+JSON_INPUT_FILE = Path(__file__).parent.parent / "data.json"
 
 
 async def main():
@@ -25,15 +25,15 @@ async def main():
 
         if item_count == 0:
             print("Items table is empty. Migrating data from JSON...")
-            with open(JSON_INPUT_FILE, encoding='utf-8') as f:
+            with open(JSON_INPUT_FILE, encoding="utf-8") as f:
                 data = json.load(f)
 
             items_to_add = [
                 Item(
-                    title=entry.get('title'),
-                    source=entry.get('file_name'),
+                    title=entry.get("title"),
+                    source=entry.get("file_name"),
                     item_type=ItemTypeEnum.BOOK,
-                    attributes={"format": "pdf"}
+                    attributes={"format": "pdf"},
                 )
                 for entry in data
             ]
@@ -48,6 +48,7 @@ async def main():
 
     await engine.dispose()
     print("Database initialization complete.")
+
 
 if __name__ == "__main__":
     asyncio.run(main())

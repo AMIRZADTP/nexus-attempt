@@ -4,7 +4,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
-env_path = Path(__file__).parent.parent / '.env'
+env_path = Path(__file__).parent.parent / ".env"
 load_dotenv(dotenv_path=env_path)
 
 DB_USER = os.getenv("DB_USER")
@@ -20,8 +20,5 @@ DATABASE_URL = (
 engine = create_async_engine(DATABASE_URL)
 
 SessionLocal = async_sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine,
-    class_=AsyncSession
+    autocommit=False, autoflush=False, bind=engine, class_=AsyncSession
 )
