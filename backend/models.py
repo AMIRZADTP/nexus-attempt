@@ -1,7 +1,16 @@
-import uuid
 import enum
+import uuid
+
 from sqlalchemy import (
-    Column, Integer, String, Table, ForeignKey, DateTime, JSON, UUID, Enum
+    JSON,
+    UUID,
+    Column,
+    DateTime,
+    Enum,
+    ForeignKey,
+    Integer,
+    String,
+    Table,
 )
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.sql import func

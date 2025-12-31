@@ -1,13 +1,14 @@
 import uuid
-from fastapi import FastAPI, Request, HTTPException, Depends, Query
+from collections.abc import AsyncGenerator
+from pathlib import Path
+
+from fastapi import Depends, FastAPI, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import AsyncGenerator
-from pathlib import Path
 
 from .database import SessionLocal
-from .domain import fetch_all_items, fetch_item_by_uuid, ItemDetail
+from .domain import ItemDetail, fetch_all_items, fetch_item_by_uuid
 
 app = FastAPI()
 templates = Jinja2Templates(directory=Path(

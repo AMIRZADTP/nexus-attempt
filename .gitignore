@@ -10,6 +10,10 @@ nexus_attempt
 
 # Virtual Environment
 venv/
+.venv/
+
+# uv (package manager)
+uv.lock
 
 # Github specific files
 .github

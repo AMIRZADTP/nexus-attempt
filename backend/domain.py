@@ -1,8 +1,9 @@
 import uuid
-from typing import List, Optional
-from sqlalchemy import select, func
+
+from pydantic import BaseModel, ConfigDict, field_validator
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from pydantic import BaseModel, field_validator, ConfigDict
+
 from .models import Item as ItemModel
 
 
@@ -19,9 +20,9 @@ class ItemDetail(BaseModel):
     id: int
     uuid: uuid.UUID
     title: str
-    source: Optional[str] = None
+    source: str | None = None
     item_type: str
-    attributes: Optional[dict] = None
+    attributes: dict | None = None
     created_at: str
 
     @field_validator('created_at', mode='before')
@@ -31,7 +32,7 @@ class ItemDetail(BaseModel):
         return "N/A"
 
 
-async def fetch_all_items(db_session: AsyncSession, skip: int = 0, limit: int = 100) -> List[ItemSummary]:
+async def fetch_all_items(db_session: AsyncSession, skip: int = 0, limit: int = 100) -> list[ItemSummary]:
     query = select(ItemModel).order_by(
         ItemModel.title).offset(skip).limit(limit)
     result = await db_session.execute(query)
@@ -39,7 +40,7 @@ async def fetch_all_items(db_session: AsyncSession, skip: int = 0, limit: int = 
     return [ItemSummary.model_validate(item) for item in items_from_db]
 
 
-async def fetch_item_by_uuid(db_session: AsyncSession, item_uuid: uuid.UUID) -> Optional[ItemModel]:
+async def fetch_item_by_uuid(db_session: AsyncSession, item_uuid: uuid.UUID) -> ItemModel | None:
     query = select(ItemModel).where(ItemModel.uuid == item_uuid)
     result = await db_session.execute(query)
     return result.scalar_one_or_none()

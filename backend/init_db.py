@@ -1,6 +1,7 @@
 import asyncio
 import json
 from pathlib import Path
+
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine
 
@@ -24,7 +25,7 @@ async def main():
 
         if item_count == 0:
             print("Items table is empty. Migrating data from JSON...")
-            with open(JSON_INPUT_FILE, 'r', encoding='utf-8') as f:
+            with open(JSON_INPUT_FILE, encoding='utf-8') as f:
                 data = json.load(f)
 
             items_to_add = [
