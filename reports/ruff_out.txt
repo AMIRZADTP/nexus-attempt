@@ -1,0 +1,28 @@
+﻿SIM102 Use a single `if` statement instead of nested `if` statements
+  --> src\nexus\domain\schemas.py:26:9
+   |
+24 |       @field_validator('created_at', mode='before')
+25 |       def format_date(cls, v: object) -> str:
+26 | /         if v:
+27 | |             # We assume v is a datetime object if it has strftime, or maybe check type
+28 | |             if hasattr(v, 'strftime'):
+   | |______________________________________^
+29 |                   return v.strftime('%Y-%m-%d %H:%M')  # type: ignore
+30 |           return "N/A"
+   |
+help: Combine `if` statements using `and`
+
+W293 Blank line contains whitespace
+  --> src\nexus\domain\services.py:18:1
+   |
+16 |     """
+17 |     Fetch all items with pagination.
+18 |     
+   | ^^^^
+19 |     Results are cached for 5 minutes to avoid repeated DB queries.
+20 |     """
+   |
+help: Remove whitespace from blank line
+
+Found 2 errors.
+No fixes available (1 hidden fix can be enabled with the `--unsafe-fixes` option).

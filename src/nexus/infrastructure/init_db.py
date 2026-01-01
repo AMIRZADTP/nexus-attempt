@@ -5,15 +5,15 @@ from pathlib import Path
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine
 
-from nexus.infrastructure.database import DATABASE_URL
-from nexus.domain.models import Base, Item, ItemTypeEnum
+from nexus.infrastructure.persistence.models import Base, Item, ItemTypeEnum
+from nexus.infrastructure.persistence.database import DATABASE_URL
 
 # data.json is at project root. init_db.py is in src/nexus/infrastructure
 # So parent (infra) -> parent (nexus) -> parent (src) -> parent (root)
 JSON_INPUT_FILE = Path(__file__).resolve().parent.parent.parent.parent / "data.json"
 
 
-async def main():
+async def main() -> None:
     print("Initializing database...")
     engine = create_async_engine(DATABASE_URL)
 
@@ -40,11 +40,13 @@ async def main():
                 for entry in data
             ]
 
-            async with engine.begin() as conn_insert:
-                await conn_insert.run_sync(
-                    lambda session: session.add_all(items_to_add)
-                )
             print(f"{len(items_to_add)} items migrated successfully.")
+
+            # Use AsyncSession for ORM operations
+            from nexus.infrastructure.persistence.database import SessionLocal
+            async with SessionLocal() as session:
+                session.add_all(items_to_add)
+                await session.commit()
         else:
             print("Database already contains data. Skipping migration.")
 

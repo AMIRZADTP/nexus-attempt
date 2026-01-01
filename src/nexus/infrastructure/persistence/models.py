@@ -1,5 +1,6 @@
 import enum
 import uuid
+from typing import Any
 
 from sqlalchemy import (
     JSON,
@@ -23,7 +24,7 @@ class ItemTypeEnum(enum.Enum):
     UNCATEGORIZED = "uncategorized"
 
 
-Base = declarative_base()
+Base: Any = declarative_base()
 
 item_topic_association = Table(
     "item_topics",
@@ -41,7 +42,7 @@ class Item(Base):
     )
     title = Column(String, nullable=False, index=True)
     source = Column(String)
-    item_type = Column(
+    item_type: Column[ItemTypeEnum] = Column(
         Enum(ItemTypeEnum), default=ItemTypeEnum.UNCATEGORIZED, nullable=False
     )
     attributes = Column(JSON)
@@ -50,7 +51,7 @@ class Item(Base):
         "Topic", secondary=item_topic_association, back_populates="items"
     )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<Item(id={self.id}, title='{self.title[:20]}...')>"
 
 
@@ -62,5 +63,5 @@ class Topic(Base):
         "Item", secondary=item_topic_association, back_populates="topics"
     )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<Topic(id={self.id}, name='{self.name}')>"

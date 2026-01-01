@@ -27,7 +27,7 @@ POSTGRES_DB=nexus_db
 
 DB_USER=nexus_user
 DB_PASSWORD=nassword
-DB_HOST=db
+DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=nexus_db
 ```
@@ -85,9 +85,10 @@ Nexus follows a **Domain-Driven Design (DDD)** inspired layered architecture:
 
 | Layer | Path | Purpose |
 |-------|------|---------|
-| **API** | `src/nexus/api` | REST endpoints, templates, dependencies |
-| **Domain** | `src/nexus/domain` | Business logic, Pydantic schemas, models |
-| **Infrastructure** | `src/nexus/infrastructure` | Database, Cache, External services |
+| **Interface** | `src/nexus/interface` | Web API (FastAPI), Routes, Dependencies |
+| **Application** | `src/nexus/application` | Business Logic / Orchestration Services |
+| **Domain** | `src/nexus/domain` | Pure Business Entities & Abstract Repositories |
+| **Infrastructure** | `src/nexus/infrastructure` | Database (Persistence), Adapters |
 
 key Technologies:
 - **FastAPI**: Modern, fast web framework

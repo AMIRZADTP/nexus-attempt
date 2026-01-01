@@ -24,7 +24,8 @@ venv/
 htmlcov/
 
 # Github specific files
-.github
+# .github
+
 
 # IDE and editor specific files
 .vscode/
@@ -36,3 +37,20 @@ app.log
 # Personal development files
 WARP.md
 review.md
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Deployment
+.env
+.env.*
+!.env.example
+
+# Testing types
+.coverage
+coverage.xml
+.pytest_cache/
+htmlcov/
