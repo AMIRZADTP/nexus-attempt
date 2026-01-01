@@ -33,6 +33,10 @@ RUN chmod +x /app/entrypoint.sh
 
 # Create user
 RUN useradd --create-home --shell /bin/bash appuser
+
+# Add virtual environment to PATH
+ENV PATH="/app/.venv/bin:$PATH"
+
 USER appuser
 
 EXPOSE 8000
