@@ -80,11 +80,3 @@ uv run ruff check .
 uv run mypy .
 uv run pytest
 ```
-
----
-
-## 📝 Governance
-
-- **ADRs**: See [ADR 001: Clean Architecture](reports/ADR_001_clean_architecture.md).
-- **History**: Audit logs and linting results are in the `/reports` directory.
-- **Roadmap**: Progress is tracked in `task.md`.
